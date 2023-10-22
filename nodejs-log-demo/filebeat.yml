@@ -1,0 +1,35 @@
+# ============================== Filebeat inputs ===============================
+
+filebeat.inputs:
+
+# Each - is an input. Most options can be set at the input level, so
+# you can use different inputs for various configurations.
+# Below are the input specific configurations.
+
+- type: log
+  # Change to true to enable this input configuration.
+  enabled: true
+  # Paths that should be crawled and fetched. Glob based paths.
+  paths:
+    - ./logs/log.json
+  json.keys_under_root: true
+  json.overwrite_keys: true
+  json.add_error_key: true
+  json.expand_keys: true
+
+output.elasticsearch:
+  hosts: ["your_elasticsearch_host:9200"]
+  index: "your_index_name-%{+yyyy.MM.dd}"
+  # Optional - Set the username and password if your Elasticsearch cluster requires authentication
+  # username: "your_username"
+  # password: "your_password"
+
+setup.kibana:
+  host: "your_kibana_host:5601"
+  # Optional - Set the username and password if your Kibana instance requires authentication
+  # username: "your_username"
+  # password: "your_password"
+
+processors:
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~
